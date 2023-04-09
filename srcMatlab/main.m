@@ -51,7 +51,6 @@ ticStart = tic;
 while (toc(tObj)<= duration)
 tic
 if useArduino
-    flush(board0);
     raw = writeread(board0, "a");
     data = sscanf(raw, '%d');
 else
@@ -121,8 +120,11 @@ end
 
 %% Plot of curves with profile markings
 figure; 
-plot(Tstamp0,A0Array,"Color",'red'); hold on; plot(Tstamp0(ploc0),peaks0,'go');
-plot(Tstamp0,A1Array,"Color",'blue'); plot(Tstamp0(ploc1),peaks1,'mo');
+plot(Tstamp0,A0Array,"Color",'red'); 
+hold on; 
+plot(Tstamp0(ploc0),peaks0,'go');
+plot(Tstamp0,A1Array,"Color",'blue'); 
+plot(Tstamp0(ploc1),peaks1,'mo');
 
 plot(Tstamp0(pstart0),A0Array(pstart0),'g>',Tstamp0(pend0),A0Array(pend0),'g<');
 plot(Tstamp0(pstart1),A1Array(pstart1),'m>',Tstamp0(pend1),A1Array(pend1),'m<');

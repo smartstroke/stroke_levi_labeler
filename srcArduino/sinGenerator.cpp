@@ -37,6 +37,12 @@ void updateWaveIndex() {
     }
 }
 
+void flushSerialInput() {
+    while (Serial.available()) {
+        Serial.read();
+    }
+}
+
 // the loop function runs over and over again forever
 void loop() {
     updateWaveIndex();
@@ -47,7 +53,7 @@ void loop() {
     if (!Serial.available()) {
         return;
     }
-    Serial.read();
+    flushSerialInput();
 
     // Prep time data
     unsigned long time = millis() - startTime;
