@@ -1,7 +1,7 @@
-clear board; clear all;
+clear all;
 % % % Initialize the Arduino board % % %
 
-board = serialport("COM5",115200);
+board = serialport("COM8",115200);
 configureTerminator(board,"CR/LF");
 flush(board);
 
@@ -9,6 +9,7 @@ flush(board);
 data0 = 0;
 data1 = 0;
 time = 0;
+time0 = 0;
 
 % % % Scalars % % %
 peak_tot_lag = 0; % Total time difference calculated from location of peaks
@@ -67,15 +68,19 @@ xlabel("Time");
 % title("Time Lag from Derivative");
 
 flush(board);
-pause(2);
-while (time<=duration*1000)
+pause(5);
 
-    % Don't allow buffer to stack up
-    if board.NumBytesAvailable>100
-        flush(board);
-    end
     write(board,'a','char');
+    %Sending three 4-byte long ints so read as 3 uint32
+    data = read(board,3,'uint32')
+    time0 = data(3);
 
+
+while (time <= (time0 + (duration*1000)))
+    board
+    flush(board)
+    write(board,'a','char');
+    
     %Sending three 4-byte long ints so read as 3 uint32
     data = read(board,3,'uint32'); 
     data0 = data(1);
@@ -228,18 +233,18 @@ sum_peaks_lag = sum(peaks_lag); % total Time lag in seconds should == peaks_tot_
 % end
 
 % print
-avg_of_peaks_arr
-max_lag
-min_lag
-sum_peaks_lag
-peak_tot_lag
-dt_peak_tot_lag
+avg_of_peaks_arr;
+max_lag;
+min_lag;
+sum_peaks_lag;
+peak_tot_lag;
+dt_peak_tot_lag;
 % dt_trough_tot_lag
 idx = find(peaks_lag==min_lag);
 time_of_min = (idx);
-time_of_min
+time_of_min;
 % sum(sync)/3
 
 
-clear all;
+clear board;
 %SADC(abs(SADC-mean(SADC))<2*std(SADC)) = 0; %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
